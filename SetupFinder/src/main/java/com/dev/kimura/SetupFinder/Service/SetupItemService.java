@@ -22,25 +22,28 @@ public class SetupItemService {
 
 
     //Gravando o item adicionado
-    public SetupItemModel salvarItemAdicionado(SetupItemModel setupItem){
+    public SetupItemModel salvarItemAdicionado(SetupItemModel setupItem) {
 
         return setupRepository.save(setupItem);
 
     }
 
-    public List<SetupItemModel> listarComponentes(){
+    //Listando todos os componentes
+    public List<SetupItemModel> listarComponentes() {
         return setupRepository.findAll();
+
     }
 
-    public SetupItemDTO listarComponentesPorId(Long id){
+    //Listando todos os componentes
+    public SetupItemDTO listarComponentesPorId(Long id) {
 
         Optional<SetupItemModel> componenteId = setupRepository.findById(id);
         return componenteId.map(setupItemMapper::map).orElse(null);
     }
 
-    public SetupItemDTO atualizaComponente(Long id, SetupItemDTO setupAlterado){
+    public SetupItemDTO atualizaComponente(Long id, SetupItemDTO setupAlterado) {
 
-        return setupRepository.findById(id).map(setupExistente ->{
+        return setupRepository.findById(id).map(setupExistente -> {
 
             if (setupAlterado.getDescricao() != null) {
                 setupExistente.setDescricao(setupAlterado.getDescricao());
@@ -58,6 +61,13 @@ public class SetupItemService {
             return setupItemMapper.map(componenteSalvo);
         }).orElse(null);
     }
+
+    //Deletar o componente
+    public void deletarComponente(Long id){
+        setupRepository.deleteById(id);
+    }
+
+
 
 
 }
