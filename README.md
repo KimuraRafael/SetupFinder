@@ -23,3 +23,56 @@ Sistema backend em desenvolvimento que cadastra peças de PC (CPU, GPU, RAM etc.
 
 ## 🚀 Como rodar localmente
 (O projeto ainda não está pronto para uso externo – essas instruções são só para desenvolvimento pessoal.)
+
+## Endpoints disponíveis (testados no Postman)
+
+Os endpoints CRUD para peças/componentes já estão operando corretamente.
+
+GET /listarComponentes (lista todas as peças)
+Retorna array JSON de peças cadastradas.
+POST /adicionarComponente (cadastra nova peça)
+Body JSON esperado: {
+  "descricao": "Placa de Vídeo ASUS DUAL RTX 5060",
+  "componente": "Placa_de_vídeo",
+  "valor": 2399.99,
+  "quantidade": 1,
+  "dataValor": "2025-01-20"
+}
+PUT /atualizarComponente/{id} (atualiza peça)
+Retorna mensagem de sucesso
+DELETE /pecas/{id} (remove peça)
+Retorna mensagem de sucesso.
+
+## 📸 Demonstração 
+Aqui vão screenshots reais dos endpoints funcionando (com verificação antes/depois onde aplicável):
+
+### GET - Listando componentes/peças
+![Listando componentes](ListarComponentes.png)
+
+### POST - Adicionando componente
+![Adicionando componente](AdicionaComponente.png)
+
+### PUT - Atualizando componente
+
+Antes da atualização:
+![Antes da atualização](Antes_AtualizarComponente.png)
+
+Mensagem de Retorno após alterar os dados devidamente:
+![Execução do Endpoint](AtualizarComponente_Executado.png)
+
+Resultado da atualização:
+![Depois da atualização](Depois_AtualizarComponente.png)
+
+### DELETE - Removendo componente
+
+![Antes de deletar](Antes_AtualizarComponente.png)
+
+![Execução do Endpoint](DeletarComponente.png)
+
+Resultado do delete:
+![Depois de deletar](Depois_DeletarComponente.png)
+
+**Nota:** Capturas reais mostrando status de sucesso e respostas. Dados de teste no H2.
+
+
+
