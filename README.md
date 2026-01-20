@@ -47,30 +47,32 @@ Retorna mensagem de sucesso.
 Aqui vão screenshots reais dos endpoints funcionando (com verificação antes/depois onde aplicável):
 
 ### GET - Listando componentes/peças
-![Listando componentes](ListarComponentes.png)
+![Listando componentes](prints/ListarComponentes.png)
 
 ### POST - Adicionando componente
-![Adicionando componente](AdicionaComponente.png)
+![Adicionando componente](prints/AdicionaComponente.png)
 
 ### PUT - Atualizando componente
 
 Antes da atualização:
-![Antes da atualização](Antes_AtualizarComponente.png)
+![Antes da atualização](prints/Antes_AtualizarComponente.png)
 
 Mensagem de Retorno após alterar os dados devidamente:
-![Execução do Endpoint](AtualizarComponente_Executado.png)
+![Execução do Endpoint](prints/AtualizarComponente_Executado.png)
 
 Resultado da atualização:
-![Depois da atualização](Depois_AtualizarComponente.png)
+![Depois da atualização](prints/Depois_AtualizarComponente.png)
 
 ### DELETE - Removendo componente
 
-![Antes de deletar](Antes_AtualizarComponente.png)
+Antes de deletar:
+![Antes de deletar](prints/Antes_AtualizarComponente.png)
 
-![Execução do Endpoint](DeletarComponente.png)
+Mensagem de Retorno após deletar algum componente por ID:
+![Execução do Endpoint](prints/DeletarComponente.png)
 
 Resultado do delete:
-![Depois de deletar](Depois_DeletarComponente.png)
+![Depois de deletar](prints/Depois_DeletarComponente.png)
 
 **Nota:** Capturas reais mostrando status de sucesso e respostas. Dados de teste no H2.
 
