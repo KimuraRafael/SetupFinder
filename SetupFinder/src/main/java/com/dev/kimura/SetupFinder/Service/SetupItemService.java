@@ -57,6 +57,9 @@ public class SetupItemService {
             if (setupAlterado.getValor() != null) {
                 setupExistente.setValor(setupAlterado.getValor());
             }
+            if(setupAlterado.getDataValor()!=null){
+                setupExistente.setDataValor(setupAlterado.getDataValor());
+            }
             SetupItemModel componenteSalvo = setupRepository.save(setupExistente);
             return setupItemMapper.map(componenteSalvo);
         }).orElse(null);
