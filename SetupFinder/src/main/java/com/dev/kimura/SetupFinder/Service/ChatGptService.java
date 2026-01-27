@@ -22,13 +22,13 @@ public class ChatGptService {
 
     // Requisição que prepara o prompt
     public Mono<String> generateSetup() {
+        String prompt = "Baseado ao meu banco de dados, me informe as melhores peças compatíveis para montar um setup custo x beneficio";
 
-        String prompt = "Me sugira o melhor custo x benefício com de acordo com as peças fornecidas";
         Map<String, Object> requestBody = Map.of(
-                "model", "gpt-5.2",
-                "mensages", List.of(
+                "model", "gpt-4o",
+                "messages", List.of(
                         Map.of("role", "system", "content", "Você deve buscar pelas peças compatíveis de acordo com as fornecidas"),
-                        Map.of("role", "use", "content", prompt)
+                        Map.of("role", "user", "content", prompt)
                 )
         );
 
