@@ -1,6 +1,7 @@
 package com.dev.kimura.SetupFinder.Controller;
 
 import com.dev.kimura.SetupFinder.Service.ChatGptService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +16,10 @@ public class SetupController {
         this.chatGptService = chatGptService;
     }
 
-    public SetupController() {
-    }
-
     @GetMapping("/generate")
     public Mono<ResponseEntity<String>> generateSetup(){
-
-        return chatGptService.generateSetup();
+        return chatGptService.generateSetup()
+                .map(setup -> ResponseEntity.ok(setup))
+                .defaultIfEmpty(ResponseEntity.noContent().build());
     }
 }
