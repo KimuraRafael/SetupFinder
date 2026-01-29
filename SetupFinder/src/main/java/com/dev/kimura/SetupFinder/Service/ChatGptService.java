@@ -1,5 +1,6 @@
 package com.dev.kimura.SetupFinder.Service;
 
+import com.dev.kimura.SetupFinder.Model.SetupItemModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatGptService {
@@ -21,8 +23,14 @@ public class ChatGptService {
     }
 
     // Requisição que prepara o prompt
-    public Mono<String> generateSetup() {
-        String prompt = "Baseado ao meu banco de dados, me informe as melhores peças compatíveis para montar um setup custo x beneficio";
+    public Mono<String> generateSetup(List<SetupItemModel> setupItens) {
+
+        String prompt = "Baseado no meu banco de dados, me informe as melhores peças compatíveis para montar um setup custo x beneficio, leve em consideração os preços em lojas virtuais e me traga os links";
+
+        String componentes = setupItens.stream()
+                .map(setup -> String.format("%s (Componente: %s) - Quantidade: %d",
+                        setup.getDescricao(), setup.getComponente(), setup.getQuantidade()))
+                .collect(Collectors.joining("\n"));
 
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-4o",
