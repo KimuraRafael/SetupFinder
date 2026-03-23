@@ -20,12 +20,12 @@ public class SetupControllerUI {
 
     }
 
-    @GetMapping("/listarComponentes")
+/*    @GetMapping("/listarComponentes")
     public String listarComponentes(Model model){
 
         List<SetupItemDTO> listarComponentes = setupItemService.listarComponentes();
 
-    }
+    }*/
 
 
 

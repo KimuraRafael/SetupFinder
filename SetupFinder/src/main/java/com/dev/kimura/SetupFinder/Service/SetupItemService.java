@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SetupItemService {
@@ -29,8 +30,13 @@ public class SetupItemService {
     }
 
     //Listando todos os componentes
-    public List<SetupItemModel> listarComponentes() {
-        return setupRepository.findAll();
+    public List<SetupItemDTO> listarComponentes() {
+        List<SetupItemModel> itens = setupRepository.findAll();
+
+        return itens.stream()
+                        .map(setupItemMapper::map)
+                                .collect(Collectors.toList());
+
 
     }
 

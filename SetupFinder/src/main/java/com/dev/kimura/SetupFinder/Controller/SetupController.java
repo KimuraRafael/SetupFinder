@@ -1,5 +1,6 @@
 package com.dev.kimura.SetupFinder.Controller;
 
+import com.dev.kimura.SetupFinder.Model.SetupItemDTO;
 import com.dev.kimura.SetupFinder.Model.SetupItemModel;
 import com.dev.kimura.SetupFinder.Service.ChatGptService;
 import com.dev.kimura.SetupFinder.Service.SetupItemService;
@@ -26,7 +27,7 @@ public class SetupController {
     @GetMapping("/generate")
     public Mono<ResponseEntity<String>> generateSetup(){
 
-        List<SetupItemModel> setupItens = setupItemService.listarComponentes();
+        List<SetupItemDTO> setupItens = setupItemService.listarComponentes();
 
         return chatGptService.generateSetup(setupItens)
                 .map(setup -> ResponseEntity.ok(setup))

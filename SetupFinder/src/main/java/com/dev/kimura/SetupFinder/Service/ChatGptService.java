@@ -1,5 +1,6 @@
 package com.dev.kimura.SetupFinder.Service;
 
+import com.dev.kimura.SetupFinder.Model.SetupItemDTO;
 import com.dev.kimura.SetupFinder.Model.SetupItemModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ public class ChatGptService {
     }
 
     // Requisição que prepara o prompt
-    public Mono<String> generateSetup(List<SetupItemModel> setupItens) {
+    public Mono<String> generateSetup(List<SetupItemDTO> setupItens) {
 
         String prompt = "Baseado no meu banco de dados, me informe as melhores peças compatíveis para montar um setup custo x beneficio, leve em consideração os preços em lojas virtuais e me traga os links";
 

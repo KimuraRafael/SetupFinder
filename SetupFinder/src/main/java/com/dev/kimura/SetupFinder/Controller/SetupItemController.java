@@ -33,7 +33,7 @@ public class SetupItemController {
     @GetMapping("/listarComponentes")
     private ResponseEntity exibirComponentesAdicionados(){
 
-        List<SetupItemModel> listaComponentes = setupItemService.listarComponentes();
+        List<SetupItemDTO> listaComponentes = setupItemService.listarComponentes();
         return ResponseEntity.ok(listaComponentes);
     }
 
