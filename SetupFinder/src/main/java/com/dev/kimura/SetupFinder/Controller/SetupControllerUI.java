@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.dev.kimura.SetupFinder.Model.Enum.SetupComponents;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,12 +22,19 @@ public class SetupControllerUI {
 
     }
 
-/*    @GetMapping("/listarComponentes")
+  @GetMapping("/listarComponentes")
     public String listarComponentes(Model model){
 
-        List<SetupItemDTO> listarComponentes = setupItemService.listarComponentes();
+      List<SetupItemDTO> componentes = setupItemService.listarComponentes();
 
-    }*/
+      model.addAttribute("componentes", componentes);
+      model.addAttribute("tiposComponentes", SetupComponents.values());
+      model.addAttribute("componentesSelecionados", new ArrayList<>());
+      model.addAttribute("promptGerado", null);
+      model.addAttribute("respostaIa", null);
+
+      return "dashboard";
+    }
 
 
 

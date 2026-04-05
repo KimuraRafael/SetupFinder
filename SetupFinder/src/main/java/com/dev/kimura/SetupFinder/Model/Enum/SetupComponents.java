@@ -7,8 +7,8 @@ public enum SetupComponents {
     SSD,
     Fontes,
     Memoria_RAM,
-    Placa_de_vídeo,
-    Placas_Mãe,
+    Placa_Video,
+    Placas_Mae,
     Processadores,
     Gabinete
 

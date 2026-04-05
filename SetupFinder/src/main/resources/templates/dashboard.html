@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetupFinder Dashboard</title>
+    <link rel="stylesheet" th:href="@{/dashboard.css}">
+</head>
+
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>SetupFinder</h1>
+        <p>Cadastre componentes e gere uma sugestão de setup.</p>
+    </div>
+
+    <div class="layout">
+
+        <div class="left">
+            <div class="section-header">
+                <h2>Componentes</h2>
+                <button type="button" class="btn btn-success" onclick="toggleFormulario()">
+                    Cadastrar componente
+                </button>
+            </div>
+
+            <div id="formularioCadastroContainer" class="cadastro-box" style="display: none;">
+                <h3>Novo componente</h3>
+
+                <form id="formCadastroComponente">
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <input type="text" id="descricao" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="componente">Tipo de componente</label>
+                        <select id="componente" required>
+                            <option value="">Selecione</option>
+                            <option th:each="tipo : ${tiposComponentes}"
+                                    th:value="${tipo}"
+                                    th:text="${tipo}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valor">Valor</label>
+                        <input type="number" step="0.01" id="valor" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade</label>
+                        <input type="number" id="quantidade" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleFormulario()">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+
+                <div id="mensagemCadastro"></div>
+            </div>
+
+            <form th:action="@{/gerarPrompt}" method="post">
+
+                <div th:if="${componentes != null and !#lists.isEmpty(componentes)}">
+                    <div class="component" th:each="c : ${componentes}">
+
+                        <strong th:text="${c.descricao}">Descrição</strong>
+
+                        <span th:text="'Componente: ' + ${c.componente}"></span><br>
+                        <span th:text="'Valor: R$ ' + ${c.valor}"></span><br>
+                        <span th:text="'Quantidade: ' + ${c.quantidade}"></span><br>
+                        <span th:if="${c.dataValor != null}" th:text="'Data do valor: ' + ${c.dataValor}"></span><br>
+
+                        <label>
+                            <input type="checkbox" name="idsSelecionados" th:value="${c.id}">
+                            Selecionar
+                        </label>
+
+                    </div>
+                </div>
+
+                <div th:if="${componentes == null or #lists.isEmpty(componentes)}">
+                    Nenhum componente cadastrado.
+                </div>
+
+                <button class="btn btn-primary" type="submit">Gerar Prompt</button>
+            </form>
+        </div>
+
+        <div class="right">
+            <h2>Prompt Gerado</h2>
+
+            <textarea readonly
+                      th:text="${promptGerado != null ? promptGerado : 'Selecione componentes e gere o prompt.'}">
+            </textarea>
+
+            <h2>Resposta IA</h2>
+
+            <div class="result"
+                 th:text="${respostaIa != null ? respostaIa : 'A resposta aparecerá aqui.'}">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function toggleFormulario() {
+        const container = document.getElementById('formularioCadastroContainer');
+
+        if (container.style.display === 'none' || container.style.display === '') {
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+        }
+    }
+
+    const formCadastro = document.getElementById('formCadastroComponente');
+    const mensagemCadastro = document.getElementById('mensagemCadastro');
+
+    formCadastro.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const payload = {
+            descricao: document.getElementById('descricao').value,
+            componente: document.getElementById('componente').value,
+            valor: parseFloat(document.getElementById('valor').value),
+            quantidade: parseInt(document.getElementById('quantidade').value)
+        };
+
+        try {
+            const response = await fetch('/setup/adicionarComponente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao cadastrar componente');
+            }
+
+            mensagemCadastro.innerHTML = '<p style=\"color: green; margin-top: 10px;\">Componente cadastrado com sucesso.</p>';
+
+            formCadastro.reset();
+
+            setTimeout(() => {
+                window.location.href = '/listarComponentes';
+            }, 700);
+
+        } catch (error) {
+            mensagemCadastro.innerHTML = '<p style=\"color: red; margin-top: 10px;\">Não foi possível cadastrar o componente.</p>';
+        }
+    });
+</script>
+</body>
+</html>
