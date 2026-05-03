@@ -26,8 +26,8 @@ public class SetupItemController {
     @PostMapping("/adicionarComponente")
     private ResponseEntity adicionarComponente(@RequestBody SetupItemModel setupItem){
 
-        SetupItemModel adicionado = setupItemService.salvarItemAdicionado(setupItem);
         setupItem.setDataValor(LocalDate.now());
+        SetupItemModel adicionado = setupItemService.salvarItemAdicionado(setupItem);
         return ResponseEntity.ok(adicionado);
     }
 
