@@ -1,58 +1,180 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f6f8;
-}
-
 .container {
-    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
 }
 
 .header {
-    margin-bottom: 20px;
+    margin-bottom: 32px;
 }
 
 .header h1 {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .layout {
-    display: flex;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 24px;
+    align-items: flex-start;
 }
 
-.left, .right {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.left {
-    width: 60%;
-}
-
+.left,
 .right {
-    width: 40%;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.section-description {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.cadastro-box {
+    margin-bottom: 24px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #f7f7f7;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.form-group input,
+.form-group select,
+.prompt-box {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.componentes-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
 .component {
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fafafa;
 }
 
-.component strong {
-    display: block;
+.component-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.btn {
-    padding: 10px 15px;
+.component-title {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.component-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-icon {
+    width: 38px;
+    height: 38px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.btn-edit {
+    background-color: #facc15;
+    color: #111827;
+}
+
+.btn-edit:hover {
+    background-color: #eab308;
+}
+
+.btn-delete {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.btn-delete:hover {
+    background-color: #b91c1c;
+}
+
+.generate-area {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.result-card {
+    margin-bottom: 24px;
+}
+
+.prompt-box {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.result {
+    min-height: 220px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f7f7f7;
+    white-space: pre-wrap;
+}
+
+.empty-state {
+    padding: 24px;
+    text-align: center;
+    border: 1px dashed #bbb;
+    border-radius: 12px;
+    color: #666;
+}
+
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 .btn-primary {
@@ -60,17 +182,53 @@ body {
     color: white;
 }
 
-textarea {
-    width: 100%;
-    height: 200px;
-    margin-top: 10px;
+.btn-primary:hover {
+    background: #1d4ed8;
 }
 
-.result {
-    margin-top: 10px;
-    padding: 10px;
-    background: #f1f5f9;
-    border-radius: 8px;
-    min-height: 120px;
-    white-space: pre-wrap;
+.btn-success {
+    background: #16a34a;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #15803d;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+}
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .component {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .component-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .generate-area {
+        justify-content: stretch;
+    }
+
+    .generate-area .btn {
+        width: 100%;
+    }
 }

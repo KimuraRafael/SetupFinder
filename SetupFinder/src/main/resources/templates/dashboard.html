@@ -10,28 +10,50 @@
 <body>
 <div class="container">
 
-    <div class="header">
+    <!-- Cabeçalho -->
+    <header class="header">
         <h1>SetupFinder</h1>
-        <p>Cadastre componentes e gere uma sugestão de setup.</p>
-    </div>
+        <p>
+            Cadastre componentes e gere um prompt inteligente para montar uma sugestão
+            de computador com apoio da IA.
+        </p>
+    </header>
 
-    <div class="layout">
+    <!-- Layout principal -->
+    <main class="layout">
 
-        <div class="left">
+        <!-- Coluna esquerda -->
+        <section class="left">
+
             <div class="section-header">
-                <h2>Componentes</h2>
+                <div>
+                    <h2>Componentes cadastrados</h2>
+                    <p class="section-description">
+                        Os itens abaixo são carregados diretamente do banco de dados.
+                    </p>
+                </div>
+
                 <button type="button" class="btn btn-success" onclick="toggleFormulario()">
                     Cadastrar componente
                 </button>
             </div>
 
+            <!-- Formulário de cadastro -->
             <div id="formularioCadastroContainer" class="cadastro-box" style="display: none;">
-                <h3>Novo componente</h3>
+
+                <h3 id="tituloFormulario">Novo componente</h3>
+
+                <input type="hidden" id="componenteId">
 
                 <form id="formCadastroComponente">
+
                     <div class="form-group">
                         <label for="descricao">Descrição</label>
-                        <input type="text" id="descricao" required>
+                        <input
+                                type="text"
+                                id="descricao"
+                                placeholder="Ex: Ryzen 5 5600G"
+                                required>
                     </div>
 
                     <div class="form-group">
@@ -47,17 +69,29 @@
 
                     <div class="form-group">
                         <label for="valor">Valor</label>
-                        <input type="number" step="0.01" id="valor" required>
+                        <input
+                                type="number"
+                                step="0.01"
+                                id="valor"
+                                placeholder="Ex: 850.00"
+                                required>
                     </div>
 
                     <div class="form-group">
                         <label for="quantidade">Quantidade</label>
-                        <input type="number" id="quantidade" required>
+                        <input
+                                type="number"
+                                id="quantidade"
+                                placeholder="Ex: 1"
+                                required>
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-success">Salvar</button>
-                        <button type="button" class="btn btn-secondary" onclick="toggleFormulario()">
+                        <button type="submit" class="btn btn-success">
+                            Salvar
+                        </button>
+
+                        <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">
                             Cancelar
                         </button>
                     </div>
@@ -66,68 +100,126 @@
                 <div id="mensagemCadastro"></div>
             </div>
 
-            <form th:action="@{/gerarPrompt}" method="post">
+            <!-- Lista de componentes -->
+            <div class="componentes-lista"
+                 th:if="${componentes != null and !#lists.isEmpty(componentes)}">
 
-                <div th:if="${componentes != null and !#lists.isEmpty(componentes)}">
-                    <div class="component" th:each="c : ${componentes}">
+                <article class="component" th:each="c : ${componentes}">
 
-                        <strong th:text="${c.descricao}">Descrição</strong>
+                    <div class="component-info">
+                        <strong class="component-title" th:text="${c.descricao}">
+                            Descrição do componente
+                        </strong>
 
-                        <span th:text="'Componente: ' + ${c.componente}"></span><br>
-                        <span th:text="'Valor: R$ ' + ${c.valor}"></span><br>
-                        <span th:text="'Quantidade: ' + ${c.quantidade}"></span><br>
-                        <span th:if="${c.dataValor != null}" th:text="'Data do valor: ' + ${c.dataValor}"></span><br>
+                        <span th:text="'Tipo: ' + ${c.componente}">
+                            Tipo: Processador
+                        </span>
 
-                        <label>
-                            <input type="checkbox" name="idsSelecionados" th:value="${c.id}">
-                            Selecionar
-                        </label>
+                        <span th:text="'Valor: R$ ' + ${c.valor}">
+                            Valor: R$ 0,00
+                        </span>
 
+                        <span th:text="'Quantidade: ' + ${c.quantidade}">
+                            Quantidade: 1
+                        </span>
+
+                        <span th:if="${c.dataValor != null}"
+                              th:text="'Data do valor: ' + ${c.dataValor}">
+                            Data do valor
+                        </span>
+                    </div>
+
+                    <div class="component-actions">
+                        <button type="button"
+                                class="btn-icon btn-edit"
+                                th:data-id="${c.id}"
+                                th:data-descricao="${c.descricao}"
+                                th:data-componente="${c.componente}"
+                                th:data-valor="${c.valor}"
+                                th:data-quantidade="${c.quantidade}"
+                                title="Editar componente">
+                            ✏️
+                        </button>
+
+                        <button type="button"
+                                class="btn-icon btn-delete"
+                                th:onclick="|deletarComponente(${c.id}, event)|"
+                                title="Excluir componente">
+                            🗑️
+                        </button>
+                    </div>
+
+                </article>
+            </div>
+
+            <!-- Estado vazio -->
+            <div class="empty-state"
+                 th:if="${componentes == null or #lists.isEmpty(componentes)}">
+                <p>Nenhum componente cadastrado.</p>
+                <span>Cadastre uma peça para começar a montar seu setup.</span>
+            </div>
+
+            <!-- Formulário separado somente para gerar prompt -->
+            <form class="componentes-form" th:action="@{/gerarPrompt}" method="post">
+                <div class="generate-area">
+                    <button class="btn btn-primary" type="submit">
+                        Gerar Prompt
+                    </button>
+                </div>
+            </form>
+
+        </section>
+
+        <!-- Coluna direita -->
+        <section class="right">
+
+            <div class="result-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Prompt gerado</h2>
+                        <p class="section-description">
+                            O prompt será montado com base nos componentes cadastrados.
+                        </p>
                     </div>
                 </div>
 
-                <div th:if="${componentes == null or #lists.isEmpty(componentes)}">
-                    Nenhum componente cadastrado.
+                <textarea
+                        class="prompt-box"
+                        readonly
+                        th:text="${promptGerado != null ? promptGerado : 'Cadastre componentes e clique em Gerar Prompt.'}">
+                </textarea>
+            </div>
+
+            <div class="result-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Resposta da IA</h2>
+                        <p class="section-description">
+                            Aqui será exibida a sugestão de montagem do computador.
+                        </p>
+                    </div>
                 </div>
 
-                <button class="btn btn-primary" type="submit">Gerar Prompt</button>
-            </form>
-        </div>
-
-        <div class="right">
-            <h2>Prompt Gerado</h2>
-
-            <textarea readonly
-                      th:text="${promptGerado != null ? promptGerado : 'Selecione componentes e gere o prompt.'}">
-            </textarea>
-
-            <h2>Resposta IA</h2>
-
-            <div class="result"
-                 th:text="${respostaIa != null ? respostaIa : 'A resposta aparecerá aqui.'}">
+                <div class="result"
+                     th:text="${respostaIa != null ? respostaIa : 'A resposta da IA aparecerá aqui após a geração do prompt.'}">
+                </div>
             </div>
-        </div>
 
-    </div>
+        </section>
+
+    </main>
 
 </div>
 
 <script>
-    function toggleFormulario() {
-        const container = document.getElementById('formularioCadastroContainer');
-
-        if (container.style.display === 'none' || container.style.display === '') {
-            container.style.display = 'block';
-        } else {
-            container.style.display = 'none';
-        }
-    }
 
     const formCadastro = document.getElementById('formCadastroComponente');
     const mensagemCadastro = document.getElementById('mensagemCadastro');
 
     formCadastro.addEventListener('submit', async function (event) {
         event.preventDefault();
+
+        const id = document.getElementById('componenteId').value;
 
         const payload = {
             descricao: document.getElementById('descricao').value,
@@ -136,9 +228,15 @@
             quantidade: parseInt(document.getElementById('quantidade').value)
         };
 
+        const url = id
+            ? `/setup/atualizarComponente/${id}`
+            : '/setup/adicionarComponente';
+
+        const method = id ? 'PUT' : 'POST';
+
         try {
-            const response = await fetch('/setup/adicionarComponente', {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -146,21 +244,125 @@
             });
 
             if (!response.ok) {
-                throw new Error('Erro ao cadastrar componente');
+                const erro = await response.text();
+                console.error('Erro ao salvar componente:', response.status, erro);
+                throw new Error('Erro ao salvar componente');
             }
 
-            mensagemCadastro.innerHTML = '<p style=\"color: green; margin-top: 10px;\">Componente cadastrado com sucesso.</p>';
+            mensagemCadastro.innerHTML =
+                `<p style="color: green; margin-top: 10px;">
+                Componente ${id ? 'atualizado' : 'cadastrado'} com sucesso.
+             </p>`;
 
             formCadastro.reset();
+            document.getElementById('componenteId').value = '';
+            document.getElementById('tituloFormulario').innerText = 'Novo componente';
 
             setTimeout(() => {
                 window.location.href = '/listarComponentes';
             }, 700);
 
         } catch (error) {
-            mensagemCadastro.innerHTML = '<p style=\"color: red; margin-top: 10px;\">Não foi possível cadastrar o componente.</p>';
+            console.error(error);
+
+            mensagemCadastro.innerHTML =
+                '<p style="color: red; margin-top: 10px;">Não foi possível salvar o componente.</p>';
         }
     });
+
+    function toggleFormulario() {
+        const container = document.getElementById('formularioCadastroContainer');
+
+        if (container.style.display === 'none' || container.style.display === '') {
+            formCadastro.reset();
+            document.getElementById('componenteId').value = '';
+            document.getElementById('tituloFormulario').innerText = 'Novo componente';
+            mensagemCadastro.innerHTML = '';
+
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+        }
+    }
+    async function deletarComponente(id, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        console.log('Chamou deletarComponente com ID:', id);
+
+        const confirmar = confirm('Deseja realmente excluir este componente?');
+
+        if (!confirmar) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/setup/deletarComponente/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                const erro = await response.text();
+                console.error('Erro ao deletar:', response.status, erro);
+                throw new Error('Erro ao deletar componente');
+            }
+
+            window.location.href = '/listarComponentes';
+
+        } catch (error) {
+            console.error(error);
+            alert('Não foi possível excluir o componente.');
+        }
+    }
+
+    function editarComponente(id, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        console.log('Chamou editarComponente com ID:', id);
+        alert('Editar componente ID: ' + id);
+    }
+
+    document.querySelectorAll('.btn-edit').forEach(function (botao) {
+        botao.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const id = botao.dataset.id;
+            const descricao = botao.dataset.descricao;
+            const componente = botao.dataset.componente;
+            const valor = botao.dataset.valor;
+            const quantidade = botao.dataset.quantidade;
+
+            document.getElementById('componenteId').value = id;
+            document.getElementById('descricao').value = descricao;
+            document.getElementById('componente').value = componente;
+            document.getElementById('valor').value = valor;
+            document.getElementById('quantidade').value = quantidade;
+
+            document.getElementById('tituloFormulario').innerText = 'Editar componente';
+
+            const container = document.getElementById('formularioCadastroContainer');
+            container.style.display = 'block';
+
+            document.getElementById('descricao').focus();
+        });
+    });
+
+    function cancelarEdicao() {
+        formCadastro.reset();
+        document.getElementById('componenteId').value = '';
+        document.getElementById('tituloFormulario').innerText = 'Novo componente';
+        mensagemCadastro.innerHTML = '';
+
+        const container = document.getElementById('formularioCadastroContainer');
+        container.style.display = 'none';
+    }
 </script>
+
 </body>
 </html>
