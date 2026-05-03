@@ -22,20 +22,30 @@ public class SetupControllerUI {
 
     }
 
-  @GetMapping("/listarComponentes")
-    public String listarComponentes(Model model){
+    @GetMapping("/listarComponentes")
+    public String listarComponentes(Model model) {
 
-      List<SetupItemDTO> componentes = setupItemService.listarComponentes();
+        carregarDadosDashboard(model);
 
-      model.addAttribute("componentes", componentes);
-      model.addAttribute("tiposComponentes", SetupComponents.values());
-      model.addAttribute("componentesSelecionados", new ArrayList<>());
-      model.addAttribute("promptGerado", null);
-      model.addAttribute("respostaIa", null);
+        if (!model.containsAttribute("componentesSelecionados")) {
+            model.addAttribute("componentesSelecionados", new ArrayList<>());
+        }
 
-      return "dashboard";
+        if (!model.containsAttribute("promptGerado")) {
+            model.addAttribute("promptGerado", null);
+        }
+
+        if (!model.containsAttribute("respostaIa")) {
+            model.addAttribute("respostaIa", null);
+        }
+
+        return "dashboard";
     }
+    private void carregarDadosDashboard(Model model) {
+        List<SetupItemDTO> componentes = setupItemService.listarComponentes();
 
-
+        model.addAttribute("componentes", componentes);
+        model.addAttribute("tiposComponentes", SetupComponents.values());
+    }
 
 }
