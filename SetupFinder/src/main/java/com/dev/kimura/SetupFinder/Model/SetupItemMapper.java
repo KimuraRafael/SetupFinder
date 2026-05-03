@@ -7,6 +7,7 @@ public class SetupItemMapper {
 
     public SetupItemModel map(SetupItemDTO setupDTO){
         SetupItemModel setupMapeado = new SetupItemModel();
+        setupMapeado.setId(setupDTO.getId());
         setupMapeado.setDescricao(setupDTO.getDescricao());
         setupMapeado.setComponente(setupDTO.getComponente());
         setupMapeado.setValor(setupDTO.getValor());
@@ -17,6 +18,7 @@ public class SetupItemMapper {
 
     public SetupItemDTO map(SetupItemModel setupModel){
         SetupItemDTO setupDTO = new SetupItemDTO();
+        setupDTO.setId(setupModel.getId());
         setupDTO.setDescricao(setupModel.getDescricao());
         setupDTO.setComponente(setupModel.getComponente());
         setupDTO.setValor(setupModel.getValor());
