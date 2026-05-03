@@ -1,16 +1,17 @@
-package com.dev.kimura.SetupFinder.Service;
+    package com.dev.kimura.SetupFinder.Service;
 
-import com.dev.kimura.SetupFinder.Model.SetupItemDTO;
-import com.dev.kimura.SetupFinder.Model.SetupItemModel;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+    import com.dev.kimura.SetupFinder.Model.SetupItemDTO;
+    import com.dev.kimura.SetupFinder.Model.SetupItemModel;
+    import org.springframework.http.HttpHeaders;
+    import org.springframework.http.MediaType;
+    import org.springframework.stereotype.Service;
+    import org.springframework.web.reactive.function.client.WebClient;
+    import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+    import java.util.List;
+    import java.util.Map;
+    import java.util.stream.Collectors;
+
 
 @Service
 public class ChatGptService {
@@ -23,21 +24,51 @@ public class ChatGptService {
         this.webClient = webClient;
     }
 
-    // Requisição que prepara o prompt
+    private String montarComponentes(List<SetupItemDTO> setupItens) {
+        return setupItens.stream()
+                .map(setup -> String.format(
+                        "- %s | Componente: %s | Quantidade: %d",
+                        setup.getDescricao(),
+                        setup.getComponente(),
+                        setup.getQuantidade()
+                ))
+                .collect(Collectors.joining("\n"));
+    }
+
+    public String montarPromptVisual(List<SetupItemDTO> setupItens) {
+
+        String componentes = montarComponentes(setupItens);
+
+        return """
+                Baseado nos componentes cadastrados abaixo, monte uma sugestão de setup custo-benefício.
+
+                Componentes cadastrados:
+                %s
+
+                Regras para resposta:
+                - Analise se os componentes são compatíveis entre si.
+                - Informe possíveis gargalos.
+                - Sugira melhorias, se necessário.
+                - Considere um bom equilíbrio entre custo e desempenho.
+                - Caso algum componente essencial esteja faltando, informe claramente.
+                """.formatted(componentes);
+    }
+
     public Mono<String> generateSetup(List<SetupItemDTO> setupItens) {
 
-        String prompt = "Baseado no meu banco de dados, me informe as melhores peças compatíveis para montar um setup custo x beneficio, leve em consideração os preços em lojas virtuais e me traga os links";
-
-        String componentes = setupItens.stream()
-                .map(setup -> String.format("%s (Componente: %s) - Quantidade: %d",
-                        setup.getDescricao(), setup.getComponente(), setup.getQuantidade()))
-                .collect(Collectors.joining("\n"));
+        String prompt = montarPromptVisual(setupItens);
 
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-4o",
                 "messages", List.of(
-                        Map.of("role", "system", "content", "Você deve buscar pelas peças compatíveis de acordo com as fornecidas"),
-                        Map.of("role", "user", "content", prompt)
+                        Map.of(
+                                "role", "system",
+                                "content", "Você é um assistente especializado em montagem de computadores e compatibilidade de hardware."
+                        ),
+                        Map.of(
+                                "role", "user",
+                                "content", prompt
+                        )
                 )
         );
 
@@ -57,9 +88,7 @@ public class ChatGptService {
                         return message.get("content").toString();
                     }
 
-                    return "Forneça mais peças para um melhor resultado";
-
-
+                    return "Forneça mais peças para um melhor resultado.";
                 });
     }
 }
