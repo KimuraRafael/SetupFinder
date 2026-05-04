@@ -1,12 +1,19 @@
 # SetupFinder 🚀
+Projeto em desenvolvimento, atualmente em sua V1 funcional.
+ 
+O **SetupFinder** é um projeto em Spring Boot para cadastro de componentes de computador e geração de sugestões de setup com apoio de IA.
 
-Sistema backend em desenvolvimento que cadastra peças de PC (CPU, GPU, RAM etc.) e planeja sugerir setups completos com melhor custo-benefício, usando lógica de compatibilidade e banco de dados.
+A ideia é cadastrar peças como processador, placa de vídeo, memória RAM, armazenamento e outros componentes. Com base nesses itens, o sistema monta um prompt e solicita uma análise de compatibilidade, custo-benefício e possíveis melhorias para o setup.
 
-**Projeto em fase inicial – ainda em construção e sem funcionalidades completas.**
 
 ## ✨ Funcionalidades atuais (em desenvolvimento)
-- Cadastro básico de peças
-- Conexão com banco H2 para armazenamento temporário
+
+- Dashboard web com Thymeleaf.
+- Cadastro manual de componentes.
+- Listagem, edição e exclusão de componentes.
+- Geração de prompt com base nos componentes cadastrados.
+- Exibição da resposta da IA no dashboard.
+- Persistência local com banco H2.
 
 ## 🛠️ Tecnologias
 
@@ -22,59 +29,36 @@ Sistema backend em desenvolvimento que cadastra peças de PC (CPU, GPU, RAM etc.
 **Pretendo alterar o database futuramente quando o projeto tomar mais forma.** (Ex: migrar para PostgreSQL ou outro persistente para produção.)
 
 ## 🚀 Como rodar localmente
-(O projeto ainda não está pronto para uso externo – essas instruções são só para desenvolvimento pessoal.)
 
-## Endpoints disponíveis (testados no Postman)
+O projeto utiliza variáveis de ambiente para configurar a integração com IA e a conexão com o banco H2.
+
+| Variável | Descrição |
+
+| `API_KEY` | Chave utilizada para autenticação na API de IA. |
+| `DATABASE_URL` | URL de conexão do banco H2. |
+| `DATABASE_USER` | Usuário utilizado na conexão com o banco. |
+| `DATABASE_PASSWORD` | Senha utilizada na conexão com o banco. |
+
+> Não versionar chaves, senhas ou credenciais reais no repositório.
+
+## Principais Rotas utilizadas.
+
+Interface:
+
+- GET /setup/listarComponentes
+- POST /gerarPrompt
+
+Operações executadas pelo backend:
+
+- POST /setup/adicionarComponente
+- PUT /setup/atualizarComponente/{id}
+- DELETE /setup/deletarComponente/{id}
 
 Os endpoints CRUD para peças/componentes já estão operando corretamente.
 
-GET /listarComponentes (lista todas as peças)
-Retorna array JSON de peças cadastradas.
-POST /adicionarComponente (cadastra nova peça)
-Body JSON esperado: {
-  "descricao": "Placa de Vídeo ASUS DUAL RTX 5060",
-  "componente": "Placa_de_vídeo",
-  "valor": 2399.99,
-  "quantidade": 1,
-  "dataValor": "2025-01-20"
-}
-PUT /atualizarComponente/{id} (atualiza peça)
-Retorna mensagem de sucesso
-DELETE /pecas/{id} (remove peça)
-Retorna mensagem de sucesso.
 
-## 📸 Demonstração 
-Aqui vão screenshots reais dos endpoints funcionando (com verificação antes/depois onde aplicável):
+## 📸 Demonstração
 
-### GET - Listando componentes/peças
-![Listando componentes](prints/ListarComponentes.png)
+Dashboard principal da V1:
 
-### POST - Adicionando componente
-![Adicionando componente](prints/AdicionaComponente.png)
-
-### PUT - Atualizando componente
-
-Antes da atualização:
-![Antes da atualização](prints/Antes_AtualizarComponente.png)
-
-Mensagem de Retorno após alterar os dados devidamente:
-![Execução do Endpoint](prints/AtualizarComponente_Executado.png)
-
-Resultado da atualização:
-![Depois da atualização](prints/Depois_AtualizarComponente.png)
-
-### DELETE - Removendo componente
-
-Antes de deletar:
-![Antes de deletar](prints/Antes_AtualizarComponente.png)
-
-Mensagem de Retorno após deletar algum componente por ID:
-![Execução do Endpoint](prints/DeletarComponente.png)
-
-Resultado do delete:
-![Depois de deletar](prints/Depois_DeletarComponente.png)
-
-**Nota:** Capturas reais mostrando status de sucesso e respostas. Dados de teste no H2.
-
-
-
+![Dashboard SetupFinder](prints/SetupFinder.png)
