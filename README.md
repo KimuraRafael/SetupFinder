@@ -3,17 +3,17 @@ Projeto em desenvolvimento, atualmente em sua V1 funcional.
  
 O **SetupFinder** é um projeto em Spring Boot para cadastro de componentes de computador e geração de sugestões de setup com apoio de IA.
 
-A ideia é cadastrar peças como processador, placa de vídeo, memória RAM, armazenamento e outros componentes. Com base nesses itens, o sistema monta um prompt e solicita uma análise de compatibilidade, custo-benefício e possíveis melhorias para o setup.
+Este projeto tem como objetivo estudar a integração com Inteligência Artificial por meio de um sistema de cadastro de componentes de computador, como processador, placa de vídeo, memória RAM, armazenamento e demais peças. Com base nos itens cadastrados, o sistema gera um prompt e solicita à IA uma análise sobre compatibilidade entre os componentes, custo-benefício do setup e possíveis melhorias na configuração.
 
 
-## ✨ Funcionalidades atuais (em desenvolvimento)
+## ✨ Funcionalidades atuais 
 
 - Dashboard web com Thymeleaf.
 - Cadastro manual de componentes.
 - Listagem, edição e exclusão de componentes.
 - Geração de prompt com base nos componentes cadastrados.
 - Exibição da resposta da IA no dashboard.
-- Persistência local com banco H2.
+- Persistência local com banco H2 e Postgresql.
 
 ## 🛠️ Tecnologias
 
