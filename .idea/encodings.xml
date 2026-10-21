@@ -2,5 +2,6 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/SetupFinder/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SetupFinder/src/main/java/com/dev/kimura/SetupFinder/Controller/SetupControllerUI.java" charset="UTF-8" />
   </component>
 </project>

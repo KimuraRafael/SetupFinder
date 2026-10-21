@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: setupfinderDB
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5431:5432"
+    volumes:
+      - setupfinder-data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  setupfinder-data:
