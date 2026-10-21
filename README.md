@@ -3,17 +3,17 @@ Projeto em desenvolvimento, atualmente em sua V1 funcional.
  
 O **SetupFinder** é um projeto em Spring Boot para cadastro de componentes de computador e geração de sugestões de setup com apoio de IA.
 
-A ideia é cadastrar peças como processador, placa de vídeo, memória RAM, armazenamento e outros componentes. Com base nesses itens, o sistema monta um prompt e solicita uma análise de compatibilidade, custo-benefício e possíveis melhorias para o setup.
+Este projeto tem como objetivo estudar a integração com Inteligência Artificial por meio de um sistema de cadastro de componentes de computador, como processador, placa de vídeo, memória RAM, armazenamento e demais peças. Com base nos itens cadastrados, o sistema gera um prompt e solicita à IA uma análise sobre compatibilidade entre os componentes, custo-benefício do setup e possíveis melhorias na configuração.
 
 
-## ✨ Funcionalidades atuais (em desenvolvimento)
+## ✨ Funcionalidades atuais 
 
 - Dashboard web com Thymeleaf.
 - Cadastro manual de componentes.
 - Listagem, edição e exclusão de componentes.
 - Geração de prompt com base nos componentes cadastrados.
 - Exibição da resposta da IA no dashboard.
-- Persistência local com banco H2.
+- Persistência dos dados em PostgreSQL executado em container local
 
 ## 🛠️ Tecnologias
 
@@ -21,12 +21,9 @@ A ideia é cadastrar peças como processador, placa de vídeo, memória RAM, arm
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org)
 [![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)](https://git-scm.com)
-[![H2 Database](https://img.shields.io/badge/H2%20Database-000000?style=for-the-badge&logoColor=white)](https://h2database.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![JUnit](https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white)](https://junit.org)
 
-
-
-**Pretendo alterar o database futuramente quando o projeto tomar mais forma.** (Ex: migrar para PostgreSQL ou outro persistente para produção.)
 
 ## 🚀 Como rodar localmente
 
