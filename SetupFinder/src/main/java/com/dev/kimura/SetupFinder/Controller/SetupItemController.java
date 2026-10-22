@@ -60,6 +60,6 @@ public class SetupItemController {
             setupItemService.deletarComponente(id);
             return ResponseEntity.ok().body("Componente Deletado com sucesso");
         }
-        return ResponseEntity.ok().body("Componente não encontrado");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Componente não encontrado");
     }
 }
