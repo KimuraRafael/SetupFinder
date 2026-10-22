@@ -57,7 +57,7 @@ public class SetupItemService {
             if (setupAlterado.getComponente() != null) {
                 setupExistente.setComponente(setupAlterado.getComponente());
             }
-            if (setupAlterado.getQuantidade() > 0) {
+            if (setupAlterado.getQuantidade() != null && setupAlterado.getQuantidade() > 0) {
                 setupExistente.setQuantidade(setupAlterado.getQuantidade());
             }
             if (setupAlterado.getValor() != null) {
